@@ -23,7 +23,7 @@ Tested on Windows 11 23H2 x64
 
      ```sh
      export _GW="mingw-w64-x86_64"
-     pacman -S --needed git make gcc libiconv-devel python3 $_GW-clang $_GW-rustup $_GW-toolchain
+     pacman -S --needed git make gcc libiconv-devel python3 $_GW-clang $_GW-rustup $_GW-toolchain $_GW-llvm
      ```
 
 5. **Ensure MinGW toolchain is first on PATH for this session:**
