@@ -409,6 +409,10 @@ LFLAGS                  += -lc++
 else
 ifeq ($(UNAME),Darwin)
 LFLAGS                  += -lstdc++
+else
+ifeq ($(UNAME),MSYS2)
+LFLAGS                  += -lstdc++
+endif
 endif
 endif
 endif
