@@ -39,14 +39,16 @@ ifeq (,$(filter $(UNAME),Linux OpenBSD FreeBSD NetBSD DragonFly Darwin CYGWIN MS
 $(error "! Your Operating System ($(UNAME)) is not supported by this Makefile")
 endif
 
-# disable LTO is DEBUG > 0
+# disable LTO if DEBUG > 0
 ifeq ($(shell [ $(DEBUG) -gt 0 ] && echo true),true)
 ENABLE_LTO := 0
 endif
 
-# disable LTO is MACOS_UNIVERSAL_BINARY == 1
+# disable LTO if MACOS_UNIVERSAL_BINARY == 1
+ifeq ($(UNAME),Darwin)
 ifeq ($(MACOS_UNIVERSAL_BINARY),1)
 ENABLE_LTO := 0
+endif
 endif
 
 BUILD_MODE := native
@@ -247,11 +249,16 @@ endif
 endif
 endif
 
-ifneq ($(UNAME),Darwin)
 ifeq ($(MAINTAINER_MODE),0)
 ifeq ($(BUILD_MODE),native)
+ifneq ($(UNAME),Darwin)
 CFLAGS                  += -march=native
 CFLAGS                  += -mtune=native
+else
+ifeq ($(MACOS_UNIVERSAL_BINARY),0)
+CFLAGS                  += -march=native
+CFLAGS                  += -mtune=native
+endif
 endif
 endif
 endif
@@ -826,10 +833,10 @@ endif
 
 ifeq ($(UNAME),Darwin)
 $(HASHCAT_LIBRARY): $(NATIVE_OBJS)
-	$(CC)                     $^ -o $@                    $(LFLAGS_NATIVE) -shared -install_name $(DESTDIR)$(LIBRARY_FOLDER)/$(HASHCAT_LIBRARY) -current_version $(VERSION_PURE) -compatibility_version $(VERSION_PURE)
+	$(CXX)                    $^ -o $@                    $(LFLAGS_NATIVE) -shared -install_name $(DESTDIR)$(LIBRARY_FOLDER)/$(HASHCAT_LIBRARY) -current_version $(VERSION_PURE) -compatibility_version $(VERSION_PURE)
 else
 $(HASHCAT_LIBRARY): $(NATIVE_OBJS)
-	$(CC)                     $^ -o $@                    $(LFLAGS_NATIVE) -shared -Wl,-soname,$(HASHCAT_LIBRARY)
+	$(CXX)                    $^ -o $@                    $(LFLAGS_NATIVE) -shared -Wl,-soname,$(HASHCAT_LIBRARY)
 endif
 
 ifeq ($(SHARED),1)
