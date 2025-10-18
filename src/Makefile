@@ -412,6 +412,10 @@ LFLAGS                  += -lstdc++
 else
 ifeq ($(UNAME),MSYS2)
 LFLAGS                  += -lstdc++
+else
+ifeq ($(UNAME),Linux)
+LFLAGS                  += -lstdc++
+endif
 endif
 endif
 endif
