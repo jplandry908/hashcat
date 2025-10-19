@@ -360,7 +360,9 @@ ifneq ($(UNAME),Darwin)
 ifeq ($(and $(filter MSYS2,$(UNAME)),$(filter 1,$(CC_NATIVE_CLANG))),)
 CFLAGS                  += -fno-plt
 endif
+ifeq ($(and $(filter DragonFly,$(UNAME)),$(filter 1,$(CC_NATIVE_CLANG))),)
 LFLAGS                  += -s
+endif
 endif
 else
 ifeq ($(DEBUG),1)
