@@ -115,7 +115,7 @@ jobs:
           PATH: /mingw64/bin:$PATH
           WIN_PYTHON: ""
         run: |
-          make CC=clang CXX=clang++
+          make ENABLE_LTO=0 CC=clang CXX=clang++
 
       - name: Build (Linux/macOS)
         if: matrix.os_name_lowercase == 'linux' || matrix.os_name_lowercase == 'macos'
@@ -123,7 +123,7 @@ jobs:
           SHARED: ${{ matrix.shared }}
           TERM: xterm
         run: |
-          make CC=clang CXX=clang++
+          make ENABLE_LTO=0 CC=clang CXX=clang++
 
       - name: Build (FreeBSD)
         if: matrix.os_name_lowercase == 'freebsd'
@@ -135,7 +135,7 @@ jobs:
             pkg update
             pkg install -y git gcc gmake gsed python3 rust llvm
           run: |
-            gmake CC=clang CXX=clang++
+            gmake ENABLE_LTO=0 CC=clang CXX=clang++
 
       - name: Build (OpenBSD)
         if: matrix.os_name_lowercase == 'openbsd'
@@ -148,7 +148,7 @@ jobs:
             clang --version
           run: |
             export TERM=xterm
-            gmake CC=clang CXX=clang++
+            gmake ENABLE_LTO=0 CC=clang CXX=clang++
 
       - name: Build (NetBSD)
         if: matrix.os_name_lowercase == 'netbsd'
@@ -162,7 +162,7 @@ jobs:
           run: |
             export PATH="/usr/pkg/gcc14/bin:$PATH"
             export TERM=xterm
-            gmake CC=clang CXX=clang++
+            gmake ENABLE_LTO=0 CC=clang CXX=clang++
 
       - name: Build (DragonflyBSD)
         if: matrix.os_name_lowercase == 'dragonflybsd'
@@ -175,7 +175,7 @@ jobs:
             pkg install -y git gcc gmake gsed python3 llvm
           run: |
             export TERM=xterm
-            gmake CC=clang CXX=clang++
+            gmake ENABLE_LTO=0 CC=clang CXX=clang++
 
       - name: Generate documentation
         if: matrix.os_name_lowercase == 'linux' && matrix.shared == 0
